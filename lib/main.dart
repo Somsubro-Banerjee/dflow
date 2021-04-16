@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'Example Dialogflow Flutter',
       theme: new ThemeData(
-        primarySwatch: Colors.deepOrange,
+        primarySwatch: Colors.green,
       ),
       debugShowCheckedModeBanner: false,
       home: new HomePageDialogflow(),
@@ -65,9 +65,10 @@ class _HomePageDialogflow extends State<HomePageDialogflow> {
     Dialogflow dialogflow =
         Dialogflow(authGoogle: authGoogle, language: Language.english);
     AIResponse response = await dialogflow.detectIntent(query);
+    
     ChatMessage message = new ChatMessage(
       text: response.getMessage() ??
-          new CardDialogflow(response.getListMessage()[0]).title,
+          new CardDialogflow(response.getListMessage()[3]).title,
       name: "Bot",
       type: false,
     );
@@ -81,12 +82,16 @@ class _HomePageDialogflow extends State<HomePageDialogflow> {
     _textController.clear();
     ChatMessage message = new ChatMessage(
       text: text,
-      name: "Promise",
+      name: "DP",
       type: true,
     );
     setState(() {
       _messages.insert(0, message);
     });
+    for(int i = 0; i < _messages.length; i++)
+    {
+      print(_messages[i].text);
+    }
     Response(text);
   }
 
@@ -135,8 +140,13 @@ class ChatMessage extends StatelessWidget {
             new Text(this.name,
                 style: new TextStyle(fontWeight: FontWeight.bold)),
             new Container(
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(30)
+              ),
+              padding: EdgeInsets.all(15),
               margin: const EdgeInsets.only(top: 5.0),
-              child: new Text(text),
+              child: new Text(text, style: TextStyle(color: Colors.white),),
             ),
           ],
         ),
@@ -153,7 +163,12 @@ class ChatMessage extends StatelessWidget {
             new Text(this.name, style: Theme.of(context).textTheme.subhead),
             new Container(
               margin: const EdgeInsets.only(top: 5.0),
-              child: new Text(text),
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              padding: EdgeInsets.all(15.0),
+              child: new Text(text, style: TextStyle(color: Colors.white),),
             ),
           ],
         ),
